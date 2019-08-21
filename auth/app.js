@@ -1,23 +1,24 @@
+require('dotenv').config();
 var createError = require('http-errors');
 var express = require('express');
-var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+var mongoose = require('mongoose');
+var mongoConnection = require('./config/mongo-connection');
 
-var indexRouter = require('./routes/index');
+var authRouter = require('./api/index');
+
+console.log(process.env.ENVIRONMENT);
+mongoConnection(process.env.ENVIRONMENT);
 
 var app = express();
-
-// view engine setup
-app.set('views', path.join(__dirname, 'views'));
 
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/v1/auth', indexRouter);
+app.use('/v1', authRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -32,7 +33,10 @@ app.use(function(err, req, res, next) {
 
   // render the error page
   res.status(err.status || 500);
-  res.render('error');
+  res.json({
+    message: err.message,
+    error: err
+  });
 });
 
 module.exports = app;
