@@ -2,7 +2,12 @@ const mongoose = require('mongoose');
 
 const Auth = mongoose.Schema({
     user_id: { type: String, required: true },
-    device_info: {},
+    device_info: {
+        name: { type: String },
+        version: { type: String },
+        layout: { type: String },
+        description: { type: String }
+    },
     access_token: { type: String, required: true },
     auth_type: { type: String, required: true },
     expires_in: { type: Date },
