@@ -6,8 +6,14 @@ const Auth = mongoose.Schema({
         name: { type: String },
         version: { type: String },
         layout: { type: String },
+        os: {
+            architecture: { type: String },
+            family: { type: String },
+            version: { type: String }
+        },
         description: { type: String }
     },
+    ip_location: { type: String },
     access_token: { type: String, required: true },
     auth_type: { type: String, required: true },
     expires_in: { type: Date },

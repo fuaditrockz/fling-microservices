@@ -1,5 +1,6 @@
 const mongoose   = require('mongoose');
 const platform   = require('platform');
+const ip         = require('ip');
 const UsersModel = require('../models/users');
 const AuthModel  = require('../models/auth');
 
@@ -8,8 +9,8 @@ exports.addUserToDB = data => {
 		first_name: data.first_name,
 		last_name: data.last_name,
 		auth: {
-				email: data.email,
-				password: data.password
+			email: data.email,
+			password: data.password
 		},
 	})
 
@@ -25,7 +26,7 @@ exports.addUserToDB = data => {
 	return result;
 }
 
-exports.checkEmaiilinDB = email => {
+exports.checkEmailinDB = email => {
 	const result = UsersModel.findOne(
 		{ 'auth.email': email }
 	)
@@ -38,6 +39,7 @@ exports.authSession = (res, data, ua) => {
 		device_info: platform.parse(ua),
 		access_token: '1234',
 		auth_type: 'email',
+		ip_location: ip.address()
 	})
 
 	const result = auth.save()
